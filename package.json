@@ -1,0 +1,15 @@
+{
+  "name": "express-git-puller",
+  "version": "1.0.0",
+  "description": "Module to act as an express endpoint for receiving Git webhooks & running commands",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Haylee Schäfer",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}
