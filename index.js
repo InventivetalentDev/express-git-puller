@@ -104,12 +104,11 @@ module.exports = exports = function (config) {
             // Signature valid
         }
 
+        res.status(202).send("running");
+
         runAllCommands().then(() => {
-            res.status(200).send("done");
-            next();
         }).catch((err) => {
             console.warn(err);
-            res.status(500).send("failed");
         })
     };
 };
