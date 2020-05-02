@@ -3,30 +3,33 @@ const crypto = require("crypto");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 
+const DEFAULTS = {
+    events: ["push"], // Events to react to
+    secret: "", // Secret to validate github webhooks
+    vars: { // Map of variables to replace in commands $<var name>$
+        appName: "ExampleApp",
+        remote: "origin",
+        branch: "master"
+    },
+    commandOrder: ["pre", "git", "post"], // Order in which to run the command categories below
+    commands: { // Commands to run
+        pre: [],
+        git: [
+            "git fetch $remote$ $branch$",
+            "git pull $remote$ $branch$"
+        ],
+        post: [
+            "pm2 restart $appName$"
+        ]
+    },
+    dryCommands: false, // Dry-run commands
+    logCommands: false // Toggle command echo & output logging
+};
 
 module.exports = exports = function (config) {
-    config = Object.assign({}, {
-        events: ["push"], // Events to react to
-        secret: "", // Secret to validate github webhooks
-        vars: { // Map of variables to replace in commands $<var name>$
-            appName: "ExampleApp",
-            remote: "origin",
-            branch: "master"
-        },
-        commandOrder: ["pre", "git", "post"], // Order in which to run the command categories below
-        commands: { // Commands to run
-            pre: [],
-            git: [
-                "git fetch $remote$ $branch$",
-                "git pull $remote$ $branch$"
-            ],
-            post: [
-                "pm2 restart $appName$"
-            ]
-        },
-        dryCommands: false, // Dry-run commands
-        logCommands: false // Toggle command echo & output logging
-    }, config);
+    config = Object.assign({}, DEFAULTS, config);
+    config.vars = Object.assign({}, DEFAULTS.vars, config.vars || {});
+    config.commands = Object.assign({}, DEFAULTS.commands, config.commands || {});
 
     function replaceVars(str) {
         for (let v in config.vars) {
