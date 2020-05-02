@@ -11,6 +11,7 @@ const DEFAULTS = {
         remote: "origin",
         branch: "master"
     },
+    pusherIgnoreRegex: /\[bot\]/i,// Ignore pushers matching this regex
     commandOrder: ["pre", "git", "post"], // Order in which to run the command categories below
     commands: { // Commands to run
         pre: [],
@@ -105,6 +106,11 @@ module.exports = exports = function (config) {
                 return;
             }
             // Signature valid
+        }
+
+        if (req.body.pusher && req.body.pusher.name && config.pusherIgnoreRegex.test(req.body.pusher.name)) {
+            res.status(200).send("ignoring pusher " + req.body.pusher);
+            return;
         }
 
         res.status(202).send("running");
