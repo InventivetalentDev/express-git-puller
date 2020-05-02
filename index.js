@@ -20,6 +20,7 @@ const DEFAULTS = {
             "git pull $remote$ $branch$"
         ],
         post: [
+            "npm install",
             "pm2 restart $appName$"
         ]
     },
