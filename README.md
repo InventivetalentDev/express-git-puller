@@ -26,7 +26,7 @@ app.use(bodyParser.json()) // Required for validating the request
 // Register the puller middleware at the specified endpoint
 app.use("/_my_git_endpoint", new puller({
     events: ["push"], // Events to listen for (optional, since you can select them on Github as well - set to * to handle all events)
-    secret: "", // Set this to verify the request against the secret provided to github
+    secret: "SuperSecretSecret", // Set this to verify the request against the secret provided to github
     vars: {
         appName: "ExampleApp"
     }
