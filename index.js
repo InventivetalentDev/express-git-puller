@@ -12,15 +12,17 @@ const DEFAULTS = {
         branch: "master"
     },
     pusherIgnoreRegex: /\[bot\]/i,// Ignore pushers matching this regex
-    commandOrder: ["pre", "git", "post"], // Order in which to run the command categories below
+    commandOrder: ["pre", "git", "install", "post"], // Order in which to run the command categories below
     commands: { // Commands to run
         pre: [],
         git: [
             "git fetch $remote$ $branch$",
             "git pull $remote$ $branch$"
         ],
+        install: [
+            "npm install"
+        ],
         post: [
-            "npm install",
             "pm2 restart $appName$"
         ]
     },
