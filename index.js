@@ -6,6 +6,7 @@ const exec = util.promisify(require("child_process").exec);
 const DEFAULTS = {
     events: ["push"], // Events to react to
     secret: "", // Secret to validate github webhooks
+    token: "", // Additional to check for in query params (https://example.com/git_hook?token=12345)
     vars: { // Map of variables to replace in commands $<var name>$
         appName: "ExampleApp",
         remote: "origin",
@@ -87,6 +88,19 @@ module.exports = exports = function (config) {
             // Event not configured to be handled - just ignore it
             res.status(200).send();
             return;
+        }
+        if (!req.query.token || req.query.token.length === 0) {// missing token
+            if (config.token && config.token.length > 0) {// token is configured -> disallow request
+                res.status(401).send("missing token");
+                return;
+            }
+            // no token configured -> allow by default
+        } else {
+            if (config.token !== req.query.token) { // tokens don't match
+                console.warn(TAG + "Received webhook request with invalid token");
+                res.status(401).send("invalid token");
+                return;
+            }
         }
         if (!req.headers["x-hub-signature"] || req.headers["x-hub-signature"].length === 0) {// missing signature header
             if (config.secret && config.secret.length > 0) { // a secret is configured locally -> disallow the request
