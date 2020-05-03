@@ -28,7 +28,8 @@ const DEFAULTS = {
     },
     dryCommands: false, // Dry-run commands
     logCommands: false, // Toggle command echo & output logging
-    onRun: null // callback function for when the commands are about to be run - will be called with webhook req and res; return false to cancel commands
+    beforeRun: null, // callback function for when the commands are about to be run - will be called with webhook req and res; return false to cancel commands
+    afterRun: null // same as beforeRun, but called when done (does not run if the last commands include stuff to restart the app) - called with req, res, and an optional error
 };
 
 module.exports = exports = function (config) {
@@ -119,15 +120,23 @@ module.exports = exports = function (config) {
 
         res.status(202).send("running");
 
-        if (typeof config.onRun === "function") {
-            if (config.onRun(req, res) === false) {
+        if (typeof config.beforeRun === "function") {
+            if (config.beforeRun(req, res) === false) {
                 return;
             }
         }
 
         runAllCommands().then(() => {
+            if (typeof config.afterRun === "function") {
+                config.afterRun(req, res);
+            }
         }).catch((err) => {
             console.warn(err);
+            if (typeof config.afterRun === "function") {
+                config.afterRun(req, res, err);
+            }
         });
+
+
     };
 };
