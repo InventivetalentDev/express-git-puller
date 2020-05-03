@@ -38,7 +38,7 @@ app.listen(port, () => console.log(`Example app listening at http://localhost:${
 ```
 
 Full Config Options:
-https://github.com/InventivetalentDev/express-git-puller/blob/f180cd0530e356f461fbf62d371552436f6ecbc9/index.js#L6-L29
+https://github.com/InventivetalentDev/express-git-puller/blob/f180cd0530e356f461fbf62d371552436f6ecbc9/index.js#L6-L34
 
 ##### Github Webhook Example
 ![](https://yeleha.co/2WjQdIb)
