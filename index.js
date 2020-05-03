@@ -27,7 +27,8 @@ const DEFAULTS = {
         ]
     },
     dryCommands: false, // Dry-run commands
-    logCommands: false // Toggle command echo & output logging
+    logCommands: false, // Toggle command echo & output logging
+    onRun: null // callback function for when the commands are about to be run - will be called with webhook req and res; return false to cancel commands
 };
 
 module.exports = exports = function (config) {
@@ -118,9 +119,15 @@ module.exports = exports = function (config) {
 
         res.status(202).send("running");
 
+        if (typeof config.onRun === "function") {
+            if (config.onRun(req, res) === false) {
+                return;
+            }
+        }
+
         runAllCommands().then(() => {
         }).catch((err) => {
             console.warn(err);
-        })
+        });
     };
 };
