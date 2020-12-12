@@ -27,6 +27,12 @@ const DEFAULTS = {
             "pm2 restart $appName$"
         ]
     },
+    delays: {
+        pre: 0,
+        git: 0,
+        install: 0,
+        post: 0
+    },
     dryCommands: false, // Dry-run commands
     logCommands: false, // Toggle command echo & output logging
     beforeRun: null, // callback function for when the commands are about to be run - will be called with webhook req and res; return false to cancel commands
@@ -37,6 +43,7 @@ module.exports = exports = function (config) {
     config = Object.assign({}, DEFAULTS, config);
     config.vars = Object.assign({}, DEFAULTS.vars, config.vars || {});
     config.commands = Object.assign({}, DEFAULTS.commands, config.commands || {});
+    config.delays = Object.assign({}, DEFAULTS.delays, config.delays || {});
 
     function replaceVars(str) {
         for (let v in config.vars) {
@@ -45,9 +52,16 @@ module.exports = exports = function (config) {
         return str;
     }
 
+    function delay(time) {
+        return new Promise(resolve => {
+            setTimeout(() => resolve(), time);
+        });
+    }
+
     async function runAllCommands() {
         if (config.logCommands) console.log(TAG + "Running commands!")
         for (let cat of config.commandOrder) {
+            await delay(config.delays[cat]);
             await runCategoryCommands(cat);
         }
     }
