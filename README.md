@@ -17,7 +17,7 @@ npm install --save express-git-puller
 // Hello World Example from https://expressjs.com/en/starter/hello-world.html
 const express = require('express')
 const bodyParser = require('body-parser')
-const {Puller} = require('./dist/src/index');
+const {Puller} = require('express-git-puller');
 const app = express()
 const port = 3000
 
