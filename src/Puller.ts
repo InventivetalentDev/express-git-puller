@@ -280,6 +280,7 @@ export class Puller extends EventEmitter implements PullerEventEmitter {
             if (!body.ref.startsWith("refs\/tags\/")) return false; // not a tag
         }
         // body.base_ref exists if there's a tag in body.ref
+        if (!body.ref && !body.base_ref) return false;
         const branch = (body.base_ref || body.ref).replace(/refs\/heads\//, "");
         return this._options.branches.includes(branch.trim());
     }
