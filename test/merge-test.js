@@ -1,5 +1,5 @@
-console.log(JSON.stringify(Object.assign({},{
-    x:"y",
+console.log(JSON.stringify(Object.assign({}, {
+    x: "y",
     foo: "bar",
     nest: {
         nested: "idk",
@@ -8,6 +8,28 @@ console.log(JSON.stringify(Object.assign({},{
 }, {
     x: "z",
     nest: {
-        stuff: "nuffin"
+        stuff: "nuffin",
+        more: {
+            a: "b"
+        }
     }
 })));
+
+console.log(JSON.stringify({
+    ...{
+        x: "y",
+        foo: "bar",
+        nest: {
+            nested: "idk",
+            stuff: "thing"
+        }
+    }, ...{
+        x: "z",
+        nest: {
+            stuff: "nuffin",
+            more: {
+                a: "b"
+            }
+        }
+    }
+}));
