@@ -1,1 +1,2 @@
-export { Puller } from "./Puller";
+export * from "./Puller";
+export * from "./Github";
