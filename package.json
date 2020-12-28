@@ -1,6 +1,6 @@
 {
   "name": "express-git-puller",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Module to act as an express endpoint for receiving Git webhooks & running commands",
   "main": "dist/src/index.js",
   "typings": "dist/src/index",
