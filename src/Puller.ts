@@ -397,20 +397,24 @@ export class Puller extends EventEmitter implements PullerEventEmitter {
         return true;
     }
 
-    protected async runCommand(cmd: string): Promise<void> {
-        cmd = this.replaceVars(cmd);
-        if (this._options.logCommands || this._options.dryCommands) console.log(TAG + "RUN " + (this._options.dryCommands ? "(dry) " : "") + cmd);
-        if (!this._options.dryCommands) {
-            await exec(cmd, (err, stdout, stderr) => {
-                if (err) {
-                    console.warn(TAG + err);
-                }
-                if (this._options.logCommands) {
-                    console.log(stdout);
-                    console.warn(stderr);
-                }
-            });
-        }
+    protected runCommand(cmd: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            cmd = this.replaceVars(cmd);
+            if (this._options.logCommands || this._options.dryCommands) console.log(TAG + "RUN " + (this._options.dryCommands ? "(dry) " : "") + cmd);
+            if (!this._options.dryCommands) {
+                exec(cmd, (err, stdout, stderr) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    if (this._options.logCommands) {
+                        console.log(stdout);
+                        console.warn(stderr);
+                        resolve();
+                    }
+                });
+            }
+        })
     }
 
 }
