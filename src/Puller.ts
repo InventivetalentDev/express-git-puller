@@ -401,11 +401,15 @@ export class Puller extends EventEmitter implements PullerEventEmitter {
         cmd = this.replaceVars(cmd);
         if (this._options.logCommands || this._options.dryCommands) console.log(TAG + "RUN " + (this._options.dryCommands ? "(dry) " : "") + cmd);
         if (!this._options.dryCommands) {
-            const { stdout, stderr } = await exec(cmd);
-            if (this._options.logCommands) {
-                console.log(stdout);
-                console.warn(stderr);
-            }
+            await exec(cmd, (err, stdout, stderr) => {
+                if (err) {
+                    console.warn(TAG + err);
+                }
+                if (this._options.logCommands) {
+                    console.log(stdout);
+                    console.warn(stderr);
+                }
+            });
         }
     }
 
