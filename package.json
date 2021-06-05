@@ -1,6 +1,6 @@
 {
   "name": "express-git-puller",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "Module to act as an express endpoint for receiving Git webhooks & running commands",
   "main": "dist/src/index.js",
   "typings": "dist/src/index",
@@ -13,6 +13,7 @@
   "author": "Haylee Schäfer",
   "license": "MIT",
   "dependencies": {
+    "@inventivetalent/express-github-webhook": "^1.0.1",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "ts-node": "^9.1.1",
