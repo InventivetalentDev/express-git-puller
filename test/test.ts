@@ -1,5 +1,5 @@
 import { should } from 'chai';
-import { Options, Puller } from "../src/Puller";
+import { Options, Puller } from "../src";
 import { Request, Response, NextFunction, RequestHandler, Application } from "express";
 import { PathParams } from "express-serve-static-core";
 import { GithubBody, GithubHeaders } from "@inventivetalent/express-github-webhook";
